@@ -9,7 +9,7 @@ module.exports = {
   entry: "./src/index.js",
   plugins: [
     new HtmlWebpackPlugin({
-      title: "App",
+      title: "Carts-App",
       template: "src/template.html",
     }),
     new MiniCssExtractPlugin(),

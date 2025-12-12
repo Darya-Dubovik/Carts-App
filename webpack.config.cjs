@@ -6,16 +6,18 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.js",
+  entry: path.resolve(__dirname, "src", "index.js"), //entry: "./src/index.js",
   plugins: [
     new HtmlWebpackPlugin({
       title: "Carts-App",
-      template: "src/template.html",
+      template: path.resolve(__dirname, "src", "template.html"), //template: "src/template.html",
     }),
     new MiniCssExtractPlugin(),
   ],
   output: {
     path: path.resolve(__dirname, "dist"),
+    filename: "main.js",
+    chunkFilename: "[name].js",
     clean: true,
   },
   resolve: {
@@ -23,9 +25,19 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false, // убрать все комментарии вида /*! ... */
+          },
+        },
+      }),
+    ],
   },
-  devtool: "source-map",
+  devtool: "eval-source-map",
   devServer: {
     static: "./dist",
     port: 3000,

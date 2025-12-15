@@ -3,16 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isAuthenticated: false,
-  user: null, // сюда можно сохранять имя, email и т.д.
+  user: { login: "user1", password: "1234" },
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action) => {
+    login: (state) => {
       state.isAuthenticated = true;
-      state.user = action.payload; // payload = данные пользователя
+      // state.user = action.payload; // payload = данные пользователя
     },
     logout: (state) => {
       state.isAuthenticated = false;

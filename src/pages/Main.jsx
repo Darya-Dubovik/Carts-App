@@ -9,7 +9,10 @@ export function Main() {
   useEffect(() => {
     fetch("https://dummyjson.com/products")
       .then((res) => res.json())
-      .then((data) => dispatch(setProducts(data.products)));
+      .then((data) => {
+        console.log(data);
+        dispatch(setProducts(data.products));
+      });
   }, []);
   const products = useSelector((state) => state.products.list); // или useGetProductsQuery
 

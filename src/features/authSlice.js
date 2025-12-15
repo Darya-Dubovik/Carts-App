@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-//import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   isAuthenticated: false,
@@ -12,7 +11,6 @@ export const authSlice = createSlice({
   reducers: {
     login: (state) => {
       state.isAuthenticated = true;
-      // state.user = action.payload; // payload = данные пользователя
     },
     logout: (state) => {
       state.isAuthenticated = false;
@@ -21,7 +19,6 @@ export const authSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;

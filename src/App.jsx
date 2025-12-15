@@ -19,27 +19,3 @@ export default function App() {
     </Routes>
   );
 }
-
-// export default function App() {
-//   return (
-//     <Routes>
-//       <Route path="/" element={<Login />} />
-//       <Route
-//         path="/main"
-//         element={
-//           <ProtectedRoute>
-//             <Main />
-//           </ProtectedRoute>
-//         }
-//       />
-//       <Route
-//         path="/product/:id"
-//         element={
-//           <ProtectedRoute>
-//             <Product />
-//           </ProtectedRoute>
-//         }
-//       />
-//     </Routes>
-//   );
-// }

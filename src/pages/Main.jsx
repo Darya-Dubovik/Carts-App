@@ -2,7 +2,15 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../features/productsSlice";
-import { Button } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 
 export function Main() {
   const dispatch = useDispatch();
@@ -19,18 +27,78 @@ export function Main() {
 
   return (
     <div>
-      {products.map((product) => (
-        <div key={product.id}>
-          <img src={product.thumbnail} />
-          <h3>{product.title}</h3>
-          <p>{product.category}</p>
-          <p>{product.price}$</p>
-          <Button size="small" color="secondary" variant="contained">
-            <Link to={`/product/${product.id}`}>Подробнее</Link>
-          </Button>
-          {/* <Link to={`/product/${product.id}`}>Подробнее</Link> */}
-        </div>
-      ))}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 5,
+          alignItems: "stretch",
+          justifyContent: "center",
+        }}
+      >
+        {products.map((product) => (
+          <div key={product.id}>
+            <Card
+              variant="outline"
+              sx={{
+                width: 345,
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "100%",
+                  objectFit: "contain",
+                }}
+                image={product.thumbnail}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography
+                  variant="h2"
+                  sx={{
+                    fontSize: "1.7rem",
+                    fontWeight: 500,
+                    mb: 1.5,
+                  }}
+                >
+                  {product.title}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    fontSize: "1.2rem",
+                    fontStyle: "italic",
+                    mb: 1.5,
+                  }}
+                >
+                  {product.category}
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  ${product.price}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  component={Link}
+                  to={`/product/${product.id}`}
+                  variant="contained"
+                  size="small"
+                >
+                  Подробнее
+                </Button>
+              </CardActions>
+            </Card>
+          </div>
+        ))}
+      </Box>
     </div>
   );
 }

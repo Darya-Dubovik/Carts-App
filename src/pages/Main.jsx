@@ -11,18 +11,28 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { Products_URL } from "../constants/api";
 
 export function Main() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
+    fetch(Products_URL)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
         console.log(data);
         dispatch(setProducts(data.products));
+      })
+      .catch((error) => {
+        console.error("Ошибка загрузки товаров:", error);
       });
-  }, []);
+  }, [dispatch]);
+
   const products = useSelector((state) => state.products.list);
 
   return (

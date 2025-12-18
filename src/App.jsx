@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
 import { Product } from "./pages/Product";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "./features/productsSlice";
 
 export default function App() {
   return (

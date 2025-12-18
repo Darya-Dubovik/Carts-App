@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/authSlice.js";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, TextField } from "@mui/material";
+import { Alert, Box, Button, TextField } from "@mui/material";
 
 export function Login() {
   const user = useSelector((state) => state.auth.user);
@@ -12,6 +12,19 @@ export function Login() {
 
   const [userLogin, setUserLogin] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [infoMessage, setInfoMessage] = useState("");
+  const [warningMessage, setWarningMessage] = useState("");
+
+  useEffect(() => {
+    if (!infoMessage && !warningMessage) return;
+
+    const timer = setTimeout(() => {
+      setInfoMessage("");
+      setWarningMessage("");
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [infoMessage, warningMessage]);
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -20,9 +33,9 @@ export function Login() {
       navigate("/main");
       dispatch(login());
     } else if (userLogin === "" && userPassword === "") {
-      alert("Введите данные пользователя");
+      setInfoMessage("Введите данные пользователя");
     } else {
-      alert("Пользователь не найден");
+      setWarningMessage("Пользователь не найден");
     }
   };
 
@@ -37,6 +50,10 @@ export function Login() {
         height: "100vh",
       }}
     >
+      {infoMessage ? <Alert severity="info">{infoMessage}</Alert> : null}
+      {warningMessage ? (
+        <Alert severity="warning">{warningMessage}</Alert>
+      ) : null}
       <form onSubmit={handleLogin}>
         <Box
           sx={{ display: "flex", flexDirection: "column", gap: 2, width: 300 }}

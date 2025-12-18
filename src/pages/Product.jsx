@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -10,13 +10,24 @@ import {
   Typography,
 } from "@mui/material";
 
-export function Product() {
+function Product() {
   const { id } = useParams();
   const product = useSelector((state) =>
     state.products.list.find((p) => p.id === Number(id))
   );
 
-  if (!product) return <p>Товар не найден</p>;
+  if (!product) {
+    return (
+      <Typography
+        variant="subtitle2"
+        sx={{
+          fontSize: "1.3rem",
+        }}
+      >
+        Товар не найден
+      </Typography>
+    ); //Проверить
+  }
 
   return (
     <div>
@@ -104,3 +115,5 @@ export function Product() {
     </div>
   );
 }
+
+export default Product;

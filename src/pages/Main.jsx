@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../features/productsSlice";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -13,7 +14,7 @@ import {
 } from "@mui/material";
 import { Products_URL } from "../constants/api";
 
-export function Main() {
+function Main() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,6 +35,9 @@ export function Main() {
   }, [dispatch]);
 
   const products = useSelector((state) => state.products.list);
+  if (products.length === 0) {
+    return <Alert severity="info">Список товаров пуст</Alert>; //Проверить
+  }
 
   return (
     <div>
@@ -112,3 +116,5 @@ export function Main() {
     </div>
   );
 }
+
+export default Main;

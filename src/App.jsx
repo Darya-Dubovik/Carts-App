@@ -4,6 +4,7 @@ import { Login } from "./pages/Login";
 // import { Main } from "./pages/Main";
 // import { Product } from "./pages/Product";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import { Page404 } from "./pages/Page404";
 const LazyMain = React.lazy(() => import("./pages/Main"));
 const LazyProduct = React.lazy(() => import("./pages/Product"));
 
@@ -30,6 +31,7 @@ export default function App() {
           }
         />
       </Route>
+      <Route path="/Page404" element={<Page404 />} />
     </Routes>
   );
 }

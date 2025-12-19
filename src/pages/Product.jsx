@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Alert,
@@ -16,10 +16,22 @@ import { clearProducts } from "../features/productsSlice";
 function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { id } = useParams();
+  const productId = Number(id);
+  const isNaNProduct = isNaN(productId);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearProducts());
+    navigate("/");
+  };
+
+  if (isNaNProduct) {
+    return <Navigate to="/Page404" replace />;
+  }
+
   const product = useSelector((state) =>
-    state.products.list.find((p) => p.id === Number(id))
+    state.products.list.find((p) => p.id === productId)
   );
 
   if (!product) {
@@ -58,12 +70,6 @@ function Product() {
       </>
     );
   }
-
-  const handleLogout = () => {
-    dispatch(logout());
-    dispatch(clearProducts());
-    navigate("/");
-  };
 
   return (
     <div>

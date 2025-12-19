@@ -37,9 +37,11 @@ function Main() {
       .then((data) => {
         console.log(data);
         dispatch(setProducts(data.products));
+        dispatch(setLoading(false));
       })
       .catch((error) => {
         dispatch(setError(error.message));
+        dispatch(setLoading(false));
         // console.error("Ошибка загрузки товаров:", error);
       });
   }, [dispatch]);

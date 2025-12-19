@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/authSlice.js";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Alert, Box, Button, TextField } from "@mui/material";
 
 export function Login() {
   const user = useSelector((state) => state.auth.user);
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,6 +15,12 @@ export function Login() {
   const [userPassword, setUserPassword] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
   const [warningMessage, setWarningMessage] = useState("");
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/main", { replace: true });
+    }
+  }, [isAuth, navigate]);
 
   useEffect(() => {
     if (!infoMessage && !warningMessage) return;

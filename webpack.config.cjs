@@ -6,11 +6,11 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: path.resolve(__dirname, "src", "index.js"), //entry: "./src/index.js",
+  entry: path.resolve(__dirname, "src", "index.js"),
   plugins: [
     new HtmlWebpackPlugin({
       title: "Carts-App",
-      template: path.resolve(__dirname, "src", "template.html"), //template: "src/template.html",
+      template: path.resolve(__dirname, "src", "template.html"),
     }),
     new MiniCssExtractPlugin(),
   ],
@@ -31,7 +31,7 @@ module.exports = {
         extractComments: false,
         terserOptions: {
           format: {
-            comments: false, // убрать все комментарии вида /*! ... */
+            comments: false,
           },
         },
       }),

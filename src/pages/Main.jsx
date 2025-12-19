@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../features/productsSlice";
+import {
+  clearProducts,
+  setError,
+  setLoading,
+  setProducts,
+} from "../features/productsSlice";
 import {
   Alert,
   Box,
@@ -13,11 +18,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Products_URL } from "../constants/api";
+import { logout } from "../features/authSlice";
 
 function Main() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(setLoading(true));
+
     fetch(Products_URL)
       .then((res) => {
         if (!res.ok) {
@@ -30,14 +39,45 @@ function Main() {
         dispatch(setProducts(data.products));
       })
       .catch((error) => {
-        console.error("Ошибка загрузки товаров:", error);
+        dispatch(setError(error.message));
+        // console.error("Ошибка загрузки товаров:", error);
       });
   }, [dispatch]);
 
-  const products = useSelector((state) => state.products.list);
-  if (products.length === 0) {
-    return <Alert severity="info">Список товаров пуст</Alert>; //Проверить
+  // const products = useSelector((state) => state.products.list);
+
+  const {
+    list: products,
+    loading,
+    error,
+  } = useSelector((state) => state.products);
+
+  // const productsState = useSelector((state) => state.products);
+  // const products = productsState.list;
+  // const loading = productsState.loading;
+  // const error = productsState.error;
+
+  // if (products.length === 0) {
+  //   return <Alert severity="info">Список товаров пуст</Alert>; //Проверить
+  // }
+
+  if (loading) {
+    return <Alert severity="info">Загрузка товаров...</Alert>;
   }
+
+  if (error) {
+    return <Alert severity="error">Ошибка: {error}</Alert>;
+  }
+
+  if (products.length === 0) {
+    return <Alert severity="warning">Список товаров пуст</Alert>;
+  }
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearProducts());
+    navigate("/");
+  };
 
   return (
     <div>
@@ -50,6 +90,19 @@ function Main() {
           justifyContent: "center",
         }}
       >
+        <Button
+          onClick={handleLogout}
+          variant="contained"
+          size="small"
+          sx={{
+            position: "absolute",
+            top: 26,
+            right: 16,
+            zIndex: 10,
+          }}
+        >
+          Выйти
+        </Button>
         {products.map((product) => (
           <div key={product.id}>
             <Card

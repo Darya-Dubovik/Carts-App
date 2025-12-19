@@ -16,7 +16,7 @@ export default function App() {
         <Route
           path="/main"
           element={
-            <React.Suspense fallback="Loading...">
+            <React.Suspense>
               <LazyMain />
             </React.Suspense>
           }
@@ -24,7 +24,7 @@ export default function App() {
         <Route
           path="/product/:id"
           element={
-            <React.Suspense fallback="Loading...">
+            <React.Suspense>
               <LazyProduct />
             </React.Suspense>
           }

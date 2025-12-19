@@ -1,7 +1,8 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -9,8 +10,13 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { logout } from "../features/authSlice";
+import { clearProducts } from "../features/productsSlice";
 
 function Product() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const product = useSelector((state) =>
     state.products.list.find((p) => p.id === Number(id))
@@ -18,16 +24,46 @@ function Product() {
 
   if (!product) {
     return (
-      <Typography
-        variant="subtitle2"
-        sx={{
-          fontSize: "1.3rem",
-        }}
-      >
-        Товар не найден
-      </Typography>
-    ); //Проверить
+      <>
+        <Alert severity="warning">Товар не найден</Alert>
+        <Button
+          component={Link}
+          to={"/main"}
+          variant="contained"
+          size="small"
+          sx={{
+            position: "absolute",
+            top: 86,
+            left: 16,
+            zIndex: 10,
+          }}
+        >
+          Вернуться назад
+        </Button>
+        <Button
+          component={Link}
+          to={"/"}
+          onClick={handleLogout}
+          variant="contained"
+          size="small"
+          sx={{
+            position: "absolute",
+            top: 86,
+            right: 16,
+            zIndex: 10,
+          }}
+        >
+          Выйти
+        </Button>
+      </>
+    );
   }
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearProducts());
+    navigate("/");
+  };
 
   return (
     <div>
@@ -52,6 +88,20 @@ function Product() {
           }}
         >
           Вернуться назад
+        </Button>
+
+        <Button
+          onClick={handleLogout}
+          variant="contained"
+          size="small"
+          sx={{
+            position: "absolute",
+            top: 26,
+            right: 16,
+            zIndex: 10,
+          }}
+        >
+          Выйти
         </Button>
 
         <Card

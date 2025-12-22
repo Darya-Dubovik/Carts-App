@@ -5,29 +5,34 @@ import { Alert, Box } from "@mui/material";
 import { getProducts } from "../services/api";
 import { LogoutButton } from "../components/LogoutButton";
 import { ProductCard } from "../components/ProductCard";
+import { loadProducts } from "../utils/fetchProducts.js";
 
 function Main() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function getProductsWrapper() {
-      try {
-        const data = await getProducts();
-        dispatch(setProducts(data.products));
-        dispatch(setLoading(false));
-      } catch (error) {
-        dispatch(setError(error.message));
-        dispatch(setLoading(false));
-      }
-    }
-
-    dispatch(setLoading(true));
-    if (products.length === 0) {
-      getProductsWrapper();
-    } else {
-      dispatch(setLoading(false));
-    }
+    loadProducts(dispatch, products);
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   async function getProductsWrapper() {
+  //     try {
+  //       const data = await getProducts();
+  //       dispatch(setProducts(data.products));
+  //       dispatch(setLoading(false));
+  //     } catch (error) {
+  //       dispatch(setError(error.message));
+  //       dispatch(setLoading(false));
+  //     }
+  //   }
+
+  //   dispatch(setLoading(true));
+  //   if (products.length === 0) {
+  //     getProductsWrapper();
+  //   } else {
+  //     dispatch(setLoading(false));
+  //   }
+  // }, [dispatch]);
 
   const {
     list: products,

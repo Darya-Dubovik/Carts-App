@@ -17,33 +17,26 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import { Products_URL } from "../constants/api";
 import { logout } from "../features/authSlice";
+import { getProducts } from "../services/api";
 
 function Main() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(setLoading(true));
-
-    fetch(Products_URL)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
+    async function getProductsWrapper() {
+      try {
+        const data = await getProducts();
         dispatch(setProducts(data.products));
         dispatch(setLoading(false));
-      })
-      .catch((error) => {
+      } catch (error) {
         dispatch(setError(error.message));
         dispatch(setLoading(false));
-        // console.error("Ошибка загрузки товаров:", error);
-      });
+      }
+    }
+    dispatch(setLoading(true));
+    getProductsWrapper();
   }, [dispatch]);
 
   // const products = useSelector((state) => state.products.list);

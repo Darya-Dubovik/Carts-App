@@ -20,6 +20,7 @@ import {
 import { logout } from "../features/authSlice";
 import { getProducts } from "../services/api";
 import { FallbackImage } from "../components/FallbackImage";
+import { LogoutButton } from "../components/LogoutButton";
 
 function Main() {
   const dispatch = useDispatch();
@@ -76,11 +77,11 @@ function Main() {
     return <Alert severity="warning">Список товаров пуст</Alert>;
   }
 
-  const handleLogout = () => {
-    dispatch(logout());
-    dispatch(clearProducts());
-    navigate("/");
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   dispatch(clearProducts());
+  //   navigate("/");
+  // };
 
   return (
     <div>
@@ -93,7 +94,7 @@ function Main() {
           justifyContent: "center",
         }}
       >
-        <Button
+        {/* <Button
           onClick={handleLogout}
           variant="contained"
           size="small"
@@ -105,7 +106,15 @@ function Main() {
           }}
         >
           Выйти
-        </Button>
+        </Button> */}
+        <LogoutButton
+          sx={{
+            position: "absolute",
+            top: 26,
+            right: 16,
+            zIndex: 10,
+          }}
+        />
         {products.map((product) => (
           <div key={product.id}>
             <Card

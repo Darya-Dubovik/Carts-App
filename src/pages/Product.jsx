@@ -13,6 +13,7 @@ import {
 import { logout } from "../features/authSlice";
 import { clearProducts } from "../features/productsSlice";
 import { FallbackImage } from "../components/FallbackImage";
+import { LogoutButton } from "../components/LogoutButton";
 
 function Product() {
   const dispatch = useDispatch();
@@ -23,11 +24,11 @@ function Product() {
 
   console.log(productId);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    dispatch(clearProducts());
-    navigate("/");
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   dispatch(clearProducts());
+  //   navigate("/");
+  // };
 
   if (isNaNProduct) {
     return <Navigate to="/Page404" replace />;
@@ -55,7 +56,7 @@ function Product() {
         >
           Вернуться назад
         </Button>
-        <Button
+        {/* <Button
           component={Link}
           to={"/"}
           onClick={handleLogout}
@@ -69,7 +70,15 @@ function Product() {
           }}
         >
           Выйти
-        </Button>
+        </Button> */}
+        <LogoutButton
+          sx={{
+            position: "absolute",
+            top: 26,
+            right: 16,
+            zIndex: 10,
+          }}
+        />
       </>
     );
   }
@@ -99,7 +108,7 @@ function Product() {
           Вернуться назад
         </Button>
 
-        <Button
+        {/* <Button
           onClick={handleLogout}
           variant="contained"
           size="small"
@@ -111,7 +120,15 @@ function Product() {
           }}
         >
           Выйти
-        </Button>
+        </Button> */}
+        <LogoutButton
+          sx={{
+            position: "absolute",
+            top: 26,
+            right: 16,
+            zIndex: 10,
+          }}
+        />
 
         <Card
           variant="outline"

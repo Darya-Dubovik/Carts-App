@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -14,8 +15,11 @@ module.exports = {
       title: "Carts-App",
       template: path.resolve(__dirname, "src", "template.html"),
     }),
-    new MiniCssExtractPlugin(),
-  ],
+
+    !isDevelopment && new MiniCssExtractPlugin(),
+
+    isDevelopment && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
@@ -54,7 +58,10 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [
+          isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,

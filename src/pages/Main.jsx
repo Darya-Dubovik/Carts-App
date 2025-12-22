@@ -29,6 +29,7 @@ function Main() {
       try {
         const data = await getProducts();
         dispatch(setProducts(data.products));
+        //console.log(data.products);
         dispatch(setLoading(false));
       } catch (error) {
         dispatch(setError(error.message));
@@ -52,7 +53,7 @@ function Main() {
     error,
   } = useSelector((state) => state.products);
 
-  console.log(products);
+  //console.log(products);
   // const productsState = useSelector((state) => state.products);
   // const products = productsState.list;
   // const loading = productsState.loading;

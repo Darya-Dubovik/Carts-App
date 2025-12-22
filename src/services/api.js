@@ -8,10 +8,13 @@ export async function getProducts() {
   }
 
   const data = await res.json();
-  if (data.length === 0) {
-    throw new Error("Данные отсутствуют");
-  } else if (!Array.isArray(data)) {
+  if (!data || !Array.isArray(data.products)) {
     throw new Error("Ошибка формата данных");
   }
+
+  if (data.products.length === 0) {
+    throw new Error("Данные отсутствуют");
+  }
+
   return data;
 }

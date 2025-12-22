@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { logout } from "../features/authSlice";
 import { getProducts } from "../services/api";
+import { FallbackImage } from "../components/FallbackImage";
 
 function Main() {
   const dispatch = useDispatch();
@@ -116,13 +117,21 @@ function Main() {
                 flexDirection: "column",
               }}
             >
-              <CardMedia
+              {/* <CardMedia
                 component="img"
                 sx={{
                   width: "100%",
                   objectFit: "contain",
                 }}
                 image={product.thumbnail}
+              /> */}
+              <FallbackImage
+                src={product.thumbnail}
+                alt={product.title}
+                sx={{
+                  width: "100%",
+                  objectFit: "contain",
+                }}
               />
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography

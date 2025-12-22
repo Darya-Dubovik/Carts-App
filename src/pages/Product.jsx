@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { logout } from "../features/authSlice";
 import { clearProducts } from "../features/productsSlice";
+import { FallbackImage } from "../components/FallbackImage";
 
 function Product() {
   const dispatch = useDispatch();
@@ -121,13 +122,21 @@ function Product() {
             gap: 5,
           }}
         >
-          <CardMedia
+          {/* <CardMedia
             component="img"
             sx={{
               width: "100%",
               objectFit: "contain",
             }}
             image={product.thumbnail}
+          /> */}
+          <FallbackImage
+            src={product.thumbnail}
+            alt={product.title}
+            sx={{
+              width: "100%",
+              objectFit: "contain",
+            }}
           />
           <CardContent sx={{ flexGrow: 1 }}>
             <Typography

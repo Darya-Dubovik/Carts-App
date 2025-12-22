@@ -4,8 +4,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
+const isDevelopment = process.env.NODE_ENV !== "production";
+
 module.exports = {
-  mode: "development",
+  mode: isDevelopment ? "development" : "production",
   entry: path.resolve(__dirname, "src", "index.js"),
   plugins: [
     new HtmlWebpackPlugin({
@@ -24,7 +26,7 @@ module.exports = {
     extensions: [".js", ".jsx"],
   },
   optimization: {
-    minimize: true,
+    minimize: !isDevelopment,
     minimizer: [
       new CssMinimizerPlugin(),
       new TerserPlugin({
@@ -37,7 +39,7 @@ module.exports = {
       }),
     ],
   },
-  devtool: "eval-source-map",
+  devtool: isDevelopment ? "eval-cheap-module-source-map" : "source-map",
   devServer: {
     static: "./dist",
     port: 3000,

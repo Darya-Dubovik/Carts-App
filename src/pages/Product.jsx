@@ -20,6 +20,8 @@ function Product() {
   const productId = Number(id);
   const isNaNProduct = isNaN(productId);
 
+  console.log(productId);
+
   const handleLogout = () => {
     dispatch(logout());
     dispatch(clearProducts());

@@ -35,8 +35,13 @@ function Main() {
         dispatch(setLoading(false));
       }
     }
+
     dispatch(setLoading(true));
-    getProductsWrapper();
+    if (products.length === 0) {
+      getProductsWrapper();
+    } else {
+      dispatch(setLoading(false));
+    }
   }, [dispatch]);
 
   // const products = useSelector((state) => state.products.list);
@@ -47,6 +52,7 @@ function Main() {
     error,
   } = useSelector((state) => state.products);
 
+  console.log(products);
   // const productsState = useSelector((state) => state.products);
   // const products = productsState.list;
   // const loading = productsState.loading;

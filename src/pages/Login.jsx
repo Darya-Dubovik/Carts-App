@@ -15,8 +15,11 @@ export function Login() {
   const [userPassword, setUserPassword] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
   const [warningMessage, setWarningMessage] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
+    console.log(isAuth);
     if (isAuth) {
       navigate("/main", { replace: true });
     }
@@ -33,8 +36,47 @@ export function Login() {
     return () => clearTimeout(timer);
   }, [infoMessage, warningMessage]);
 
+  // Функция валидации
+  const validateForm = () => {
+    let isValid = true;
+
+    // Валидация логина
+    if (!userLogin.trim()) {
+      setLoginError("Логин не может быть пустым");
+      isValid = false;
+    } else if (userLogin.length < 5) {
+      setLoginError("Логин должен содержать минимум 5 символов");
+      isValid = false;
+    } else {
+      setLoginError("");
+    }
+
+    // Валидация пароля
+    if (!userPassword.trim()) {
+      setPasswordError("Пароль не может быть пустым");
+      isValid = false;
+    } else if (userPassword.length < 4) {
+      setPasswordError("Пароль должен содержать минимум 4 символа");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    return isValid;
+  };
+
   const handleLogin = (event) => {
     event.preventDefault();
+
+    // Очищаем предыдущие ошибки перед новой валидацией
+    setLoginError("");
+    setPasswordError("");
+
+    // Проверяем валидацию перед отправкой
+    if (!validateForm()) {
+      setInfoMessage("Пожалуйста, исправьте ошибки в форме");
+      return;
+    }
 
     if (userLogin === user.login && userPassword === user.password) {
       navigate("/main");
@@ -67,19 +109,27 @@ export function Login() {
         >
           <TextField
             onChange={(event) => setUserLogin(event.target.value)}
+            value={userLogin}
             label="Login"
             variant="outlined"
             id="login"
             fullWidth
+            error={!!loginError} // Показываем красную рамку при ошибке
+            helperText={loginError} // Текст ошибки под полем
+            autoComplete="username"
           />
 
           <TextField
             onChange={(event) => setUserPassword(event.target.value)}
+            value={userPassword}
             label="Password"
             type="password"
             variant="outlined"
             id="password"
             fullWidth
+            error={!!passwordError} // Показываем красную рамку при ошибке
+            helperText={passwordError} // Текст ошибки под полем
+            autoComplete="current-password"
           />
 
           <Button variant="contained" type="submit" sx={{ mt: 2 }}>

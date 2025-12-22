@@ -1,1 +1,36 @@
-node_modules
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# IDEs
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Swap files
+*.swp
+*.swo
+
+# npm debug
+npm-debug.log*
+
+# Misc
+*.tgz
+*.bak
+*.tmp
+

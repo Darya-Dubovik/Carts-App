@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/authSlice.js";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Alert, Box, Button, TextField } from "@mui/material";
+import { validateLoginForm } from "../utils/validateLoginForm.js";
 
 export function Login() {
   const user = useSelector((state) => state.auth.user);
@@ -37,52 +38,60 @@ export function Login() {
   }, [infoMessage, warningMessage]);
 
   // Функция валидации
-  const validateForm = () => {
-    let isValid = true;
+  // const validateForm = () => {
+  //   let isValid = true;
 
-    // Валидация логина
-    if (!userLogin.trim()) {
-      setLoginError("Логин не может быть пустым");
-      isValid = false;
-    } else if (userLogin.length < 5) {
-      setLoginError("Логин должен содержать минимум 5 символов");
-      isValid = false;
-    } else {
-      setLoginError("");
-    }
+  //   // Валидация логина
+  //   if (!userLogin.trim()) {
+  //     setLoginError("Логин не может быть пустым");
+  //     isValid = false;
+  //   } else if (userLogin.length < 5) {
+  //     setLoginError("Логин должен содержать минимум 5 символов");
+  //     isValid = false;
+  //   } else {
+  //     setLoginError("");
+  //   }
 
-    // Валидация пароля
-    if (!userPassword.trim()) {
-      setPasswordError("Пароль не может быть пустым");
-      isValid = false;
-    } else if (userPassword.length < 4) {
-      setPasswordError("Пароль должен содержать минимум 4 символа");
-      isValid = false;
-    } else {
-      setPasswordError("");
-    }
+  //   // Валидация пароля
+  //   if (!userPassword.trim()) {
+  //     setPasswordError("Пароль не может быть пустым");
+  //     isValid = false;
+  //   } else if (userPassword.length < 4) {
+  //     setPasswordError("Пароль должен содержать минимум 4 символа");
+  //     isValid = false;
+  //   } else {
+  //     setPasswordError("");
+  //   }
 
-    return isValid;
-  };
+  //   return isValid;
+  // };
 
   const handleLogin = (event) => {
     event.preventDefault();
 
-    // Очищаем предыдущие ошибки перед новой валидацией
-    setLoginError("");
-    setPasswordError("");
+    if (!userLogin && !userPassword) {
+      setInfoMessage("Введите данные пользователя");
+      setLoginError("");
+      setPasswordError("");
+      return;
+    }
+
+    const isValid = validateLoginForm({
+      login: userLogin,
+      password: userPassword,
+      setLoginError,
+      setPasswordError,
+    });
 
     // Проверяем валидацию перед отправкой
-    if (!validateForm()) {
+    if (!isValid) {
       setInfoMessage("Пожалуйста, исправьте ошибки в форме");
       return;
     }
 
     if (userLogin === user.login && userPassword === user.password) {
-      navigate("/main");
       dispatch(login());
-    } else if (userLogin === "" && userPassword === "") {
-      setInfoMessage("Введите данные пользователя");
+      navigate("/main");
     } else {
       setWarningMessage("Пользователь не найден");
     }

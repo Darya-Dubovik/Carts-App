@@ -7,28 +7,15 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
   Typography,
 } from "@mui/material";
-import { logout } from "../features/authSlice";
-import { clearProducts } from "../features/productsSlice";
 import { FallbackImage } from "../components/FallbackImage";
 import { LogoutButton } from "../components/LogoutButton";
 
 function Product() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
   const productId = Number(id);
   const isNaNProduct = isNaN(productId);
-
-  console.log(productId);
-
-  // const handleLogout = () => {
-  //   dispatch(logout());
-  //   dispatch(clearProducts());
-  //   navigate("/");
-  // };
 
   if (isNaNProduct) {
     return <Navigate to="/Page404" replace />;
@@ -56,21 +43,7 @@ function Product() {
         >
           Вернуться назад
         </Button>
-        {/* <Button
-          component={Link}
-          to={"/"}
-          onClick={handleLogout}
-          variant="contained"
-          size="small"
-          sx={{
-            position: "absolute",
-            top: 86,
-            right: 16,
-            zIndex: 10,
-          }}
-        >
-          Выйти
-        </Button> */}
+
         <LogoutButton
           sx={{
             position: "absolute",
@@ -108,19 +81,6 @@ function Product() {
           Вернуться назад
         </Button>
 
-        {/* <Button
-          onClick={handleLogout}
-          variant="contained"
-          size="small"
-          sx={{
-            position: "absolute",
-            top: 26,
-            right: 16,
-            zIndex: 10,
-          }}
-        >
-          Выйти
-        </Button> */}
         <LogoutButton
           sx={{
             position: "absolute",
@@ -139,14 +99,6 @@ function Product() {
             gap: 5,
           }}
         >
-          {/* <CardMedia
-            component="img"
-            sx={{
-              width: "100%",
-              objectFit: "contain",
-            }}
-            image={product.thumbnail}
-          /> */}
           <FallbackImage
             src={product.thumbnail}
             alt={product.title}

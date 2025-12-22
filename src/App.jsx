@@ -1,8 +1,6 @@
 import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login";
-// import { Main } from "./pages/Main";
-// import { Product } from "./pages/Product";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { Page404 } from "./pages/Page404";
 const LazyMain = React.lazy(() => import("./pages/Main"));

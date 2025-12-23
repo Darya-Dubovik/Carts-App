@@ -6,7 +6,6 @@ export function validateLoginForm({
 }) {
   let isValid = true;
 
-  // Валидация логина
   if (!login.trim()) {
     setLoginError("Логин не может быть пустым");
     isValid = false;
@@ -17,7 +16,6 @@ export function validateLoginForm({
     setLoginError("");
   }
 
-  // Валидация пароля
   if (!password.trim()) {
     setPasswordError("Пароль не может быть пустым");
     isValid = false;

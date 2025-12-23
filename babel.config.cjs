@@ -6,7 +6,7 @@ module.exports = {
     [
       "@babel/preset-react",
       {
-        runtime: "classic", // <- это ключевой момент
+        runtime: "classic",
       },
     ],
   ],

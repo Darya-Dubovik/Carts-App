@@ -37,35 +37,6 @@ export function Login() {
     return () => clearTimeout(timer);
   }, [infoMessage, warningMessage]);
 
-  // Функция валидации
-  // const validateForm = () => {
-  //   let isValid = true;
-
-  //   // Валидация логина
-  //   if (!userLogin.trim()) {
-  //     setLoginError("Логин не может быть пустым");
-  //     isValid = false;
-  //   } else if (userLogin.length < 5) {
-  //     setLoginError("Логин должен содержать минимум 5 символов");
-  //     isValid = false;
-  //   } else {
-  //     setLoginError("");
-  //   }
-
-  //   // Валидация пароля
-  //   if (!userPassword.trim()) {
-  //     setPasswordError("Пароль не может быть пустым");
-  //     isValid = false;
-  //   } else if (userPassword.length < 4) {
-  //     setPasswordError("Пароль должен содержать минимум 4 символа");
-  //     isValid = false;
-  //   } else {
-  //     setPasswordError("");
-  //   }
-
-  //   return isValid;
-  // };
-
   const handleLogin = (event) => {
     event.preventDefault();
 
@@ -83,7 +54,6 @@ export function Login() {
       setPasswordError,
     });
 
-    // Проверяем валидацию перед отправкой
     if (!isValid) {
       setInfoMessage("Пожалуйста, исправьте ошибки в форме");
       return;
@@ -123,8 +93,8 @@ export function Login() {
             variant="outlined"
             id="login"
             fullWidth
-            error={!!loginError} // Показываем красную рамку при ошибке
-            helperText={loginError} // Текст ошибки под полем
+            error={!!loginError}
+            helperText={loginError}
             autoComplete="username"
           />
 
@@ -136,8 +106,8 @@ export function Login() {
             variant="outlined"
             id="password"
             fullWidth
-            error={!!passwordError} // Показываем красную рамку при ошибке
-            helperText={passwordError} // Текст ошибки под полем
+            error={!!passwordError}
+            helperText={passwordError}
             autoComplete="current-password"
           />
 

@@ -11,7 +11,7 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     setProducts: (state, action) => {
-      state.list = action.payload; //«Возьми текущий список продуктов и замени его на то, что пришло в payload» action = dispatch(setProducts(data.products))
+      state.list = action.payload;
       state.loading = false;
       state.error = null;
     },
@@ -31,5 +31,5 @@ const productsSlice = createSlice({
 });
 
 export const { setProducts, setLoading, setError, clearProducts } =
-  productsSlice.actions; // Это объект со всеми action creator’ами, которые описаны в reducers. Деструктуризация
-export default productsSlice.reducer; // Это ОДНА функция — reducer всего slice.
+  productsSlice.actions;
+export default productsSlice.reducer;

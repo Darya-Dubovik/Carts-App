@@ -9,7 +9,7 @@ export function FallbackImage({ src, alt, ...props }) {
       image={src}
       alt={alt}
       onError={(event) => {
-        event.target.onerror = null; // чтобы не было бесконечного цикла
+        event.target.onerror = null;
         event.target.src = ImagePlaceholder;
       }}
       {...props}

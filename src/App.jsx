@@ -11,24 +11,24 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Login />} />
 
-      <Route element={<ProtectedRoute />}>
-        <Route
-          path="/main"
-          element={
-            <React.Suspense>
-              <LazyMain />
-            </React.Suspense>
-          }
-        />
-        <Route
-          path="/product/:id"
-          element={
-            <React.Suspense>
-              <LazyProduct />
-            </React.Suspense>
-          }
-        />
-      </Route>
+      {/* <Route element={<ProtectedRoute />}> */}
+      <Route
+        path="/main"
+        element={
+          <React.Suspense>
+            <LazyMain />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="/product/:id"
+        element={
+          <React.Suspense>
+            <LazyProduct />
+          </React.Suspense>
+        }
+      />
+      {/* </Route> */}
       <Route path="/Page404" element={<Page404 />} />
     </Routes>
   );

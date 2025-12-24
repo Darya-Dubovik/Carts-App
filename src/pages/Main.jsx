@@ -4,8 +4,19 @@ import { Alert, Box } from "@mui/material";
 import { LogoutButton } from "../components/LogoutButton";
 import { ProductCard } from "../components/ProductCard";
 import { loadProducts } from "../utils/fetchProducts.js";
+import { useGetMeQuery } from "../services/auth.js";
 
 function Main() {
+  // const token = useSelector((state) => state.auth.token);
+  //   const {
+  //     data: user,
+  //     isLoading,
+  //     error,
+  //     refetch // для ручного обновления
+  //   } = useGetMeQuery(undefined, {
+  //     skip: !token, // Пропускаем запрос если нет токена
+  //   });
+
   const dispatch = useDispatch();
 
   useEffect(() => {

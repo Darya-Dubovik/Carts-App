@@ -23,7 +23,7 @@ function Product() {
 
   const product = useSelector((state) =>
     state.products.list.find((p) => p.id === productId)
-  );
+  ); //взять id и отправлять запрос на id с конкретным продуктом
 
   if (!product) {
     return (

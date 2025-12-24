@@ -4,13 +4,17 @@ import { login } from "../features/authSlice.js";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Alert, Box, Button, TextField } from "@mui/material";
 import { validateLoginForm } from "../utils/validateLoginForm.js";
+import { useLoginMutation } from "../services/auth.js";
 
 export function Login() {
-  const user = useSelector((state) => state.auth.user);
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  //const user = useSelector((state) => state.auth.user);
+  //const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const [login, { isLoading, error, isSuccess }] = useLoginMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log(navigate);
 
   const [userLogin, setUserLogin] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -19,12 +23,11 @@ export function Login() {
   const [loginError, setLoginError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  useEffect(() => {
-    console.log(isAuth);
-    if (isAuth) {
-      navigate("/main", { replace: true });
-    }
-  }, [isAuth, navigate]);
+  // useEffect(() => {
+  //   if (isAuth) {
+  //     navigate("/main", { replace: true });
+  //   }
+  // }, [isAuth, navigate]);
 
   useEffect(() => {
     if (!infoMessage && !warningMessage) return;
@@ -37,7 +40,24 @@ export function Login() {
     return () => clearTimeout(timer);
   }, [infoMessage, warningMessage]);
 
-  const handleLogin = (event) => {
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("Авторизация успешна, выполняю редирект...");
+
+      // Вариант 1: Простой редирект
+      navigate("/main");
+
+      // Вариант 2: Редирект с заменой истории
+      // navigate('/main', { replace: true });
+
+      // Вариант 3: Редирект с задержкой (если нужно показать сообщение)
+      // setTimeout(() => {
+      //   navigate('/main');
+      // }, 1000);
+    }
+  }, [isSuccess, navigate]);
+
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     if (!userLogin && !userPassword) {
@@ -47,6 +67,8 @@ export function Login() {
       return;
     }
 
+    // console.log(userLogin);
+    // console.log(userPassword);
     const isValid = validateLoginForm({
       login: userLogin,
       password: userPassword,
@@ -54,14 +76,29 @@ export function Login() {
       setPasswordError,
     });
 
-    if (!isValid) {
-      setInfoMessage("Пожалуйста, исправьте ошибки в форме");
-      return;
-    }
+    // console.log(isValid);
 
-    if (userLogin === user.login && userPassword === user.password) {
-      dispatch(login());
-      navigate("/main");
+    // if (!isValid) {
+    //   setInfoMessage("Пожалуйста, исправьте ошибки в форме");
+    //   return;
+    // }
+
+    // console.log(user.login);
+    // console.log(user.password);
+
+    //if (userLogin === user.login && userPassword === user.password) {
+    if (userLogin && userPassword) {
+      try {
+        const result = await login({
+          username: userLogin,
+          password: userPassword,
+        }).unwrap();
+        console.log(result);
+        //dispatch(login());
+        //navigate("/main");
+      } catch (err) {
+        console.error("Ошибка входа:", err);
+      }
     } else {
       setWarningMessage("Пользователь не найден");
     }
@@ -79,9 +116,7 @@ export function Login() {
       }}
     >
       {infoMessage ? <Alert severity="info">{infoMessage}</Alert> : null}
-      {warningMessage ? (
-        <Alert severity="warning">{warningMessage}</Alert>
-      ) : null}
+      {error ? <Alert severity="warning">Пользователь не найден"</Alert> : null}
       <form onSubmit={handleLogin}>
         <Box
           sx={{ display: "flex", flexDirection: "column", gap: 2, width: 300 }}
@@ -111,8 +146,13 @@ export function Login() {
             autoComplete="current-password"
           />
 
-          <Button variant="contained" type="submit" sx={{ mt: 2 }}>
-            Login
+          <Button
+            disabled={isLoading}
+            variant="contained"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            {isLoading ? "Waiting..." : "Login"}
           </Button>
         </Box>
       </form>

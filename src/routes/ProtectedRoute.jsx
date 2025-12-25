@@ -1,6 +1,5 @@
-import * as React from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useGetMeQuery } from "../services/auth";
 import { useEffect } from "react";
 
@@ -16,12 +15,9 @@ export default function ProtectedRoute() {
 
   useEffect(() => {
     if (userError) {
-      navigate("/"), { replace: true };
+      navigate("/", { replace: true });
     }
   }, [userError, navigate]);
 
-  // if (!isAuth) {
-  //   return <Navigate to="/" replace />;
-  // }
   return <Outlet />;
 }

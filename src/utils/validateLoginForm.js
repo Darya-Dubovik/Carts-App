@@ -7,20 +7,20 @@ export function validateLoginForm({
   let isValid = true;
 
   if (!login.trim()) {
-    setLoginError("Login cannot be empty");
+    setLoginError("Логин не должен быть пустым");
     isValid = false;
   } else if (login.length < 5) {
-    setLoginError("Login must be at least 5 characters long");
+    setLoginError("Логин должен содержать не менее 5 символов");
     isValid = false;
   } else {
     setLoginError("");
   }
 
   if (!password.trim()) {
-    setPasswordError("Password cannot be empty");
+    setPasswordError("Пароль не должен быть пустым");
     isValid = false;
   } else if (password.length < 4) {
-    setPasswordError("Password must be at least 5 characters long");
+    setPasswordError("Пароль должен содержать не менее 4 символов");
     isValid = false;
   } else {
     setPasswordError("");

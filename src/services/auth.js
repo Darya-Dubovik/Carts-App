@@ -40,38 +40,6 @@ export const authApi = createApi({
         return response;
       },
     }),
-    // checkAuth: builder.query({
-    //   query: () => API_ENDPOINTS.authMe,
-    //   providesTags: ["Auth"],
-    //   transformErrorResponse: (response) => {
-    //     if (response.status === 401) {
-    //       localStorage.removeItem("accessToken");
-    //     }
-    //     return response;
-    //   },
-    // }),
-    // refreshToken: builder.mutation({
-    //   query: (refreshToken) => ({
-    //     url: API_ENDPOINTS.authRefresh,
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       refreshToken,
-    //     }),
-    //   }),
-    // }),
-    // logout: builder.mutation({
-    //   query: () => ({
-    //     url: "auth/logout", // если эндпоинт существует
-    //     method: "POST",
-    //   }),
-    //   transformResponse: () => {
-    //     localStorage.removeItem("accessToken");
-    //     localStorage.removeItem("refreshToken");
-    //     return { success: true };
-    //   },
-    //   invalidatesTags: ["Auth"],
-    // }),
   }),
 });
 

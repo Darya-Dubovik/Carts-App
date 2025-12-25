@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
 import {
   Alert,
   Box,
@@ -14,7 +13,6 @@ import { LogoutButton } from "../components/LogoutButton";
 import { useGetProductByIdQuery } from "../services/products";
 
 function Product() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const productId = Number(id);
   const isNaNProduct = isNaN(productId);
@@ -37,27 +35,6 @@ function Product() {
   if (error) {
     return <Alert severity="error">Ошибка: {error}</Alert>;
   }
-
-  //console.log(product);
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("accessToken");
-
-  //   if (!token) {
-  //     console.log("Нет токена, редирект на /");
-  //     navigate("/", { replace: true });
-  //     return;
-  //   }
-
-  //   if (error && error.status === 401) {
-  //     console.log("Токен недействителен, редирект на /");
-  //     localStorage.removeItem("accessToken");
-  //     navigate("/", { replace: true });
-  //   }
-  // }, [error, navigate]);
-  // const product = useSelector((state) =>
-  //   state.products.list.find((p) => p.id === productId)
-  // ); //взять id и отправлять запрос на id с конкретным продуктом
 
   if (!product) {
     return (

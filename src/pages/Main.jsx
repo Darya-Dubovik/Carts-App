@@ -3,33 +3,66 @@ import { useDispatch, useSelector } from "react-redux";
 import { Alert, Box } from "@mui/material";
 import { LogoutButton } from "../components/LogoutButton";
 import { ProductCard } from "../components/ProductCard";
-import { loadProducts } from "../utils/fetchProducts.js";
+//import { loadProducts } from "../utils/fetchProducts.js";
+//import { useNavigate } from "react-router-dom";
 import { useGetMeQuery } from "../services/auth.js";
+import { useGetProductsQuery } from "../services/products.js";
 
 function Main() {
-  // const token = useSelector((state) => state.auth.token);
-  //   const {
-  //     data: user,
-  //     isLoading,
-  //     error,
-  //     refetch // для ручного обновления
-  //   } = useGetMeQuery(undefined, {
-  //     skip: !token, // Пропускаем запрос если нет токена
-  //   });
+  //const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    loadProducts(dispatch, products);
-  }, [dispatch]);
-
+  // Получаем товары
   const {
-    list: products,
-    loading,
+    data: products,
+    isLoading,
     error,
-  } = useSelector((state) => state.products);
+    refetch: refetchProducts,
+  } = useGetProductsQuery();
 
-  if (loading) {
+  // useEffect(() => {
+  //   const token = localStorage.getItem("accessToken");
+
+  //   if (!token) {
+  //     console.log("Нет токена, редирект на /");
+  //     navigate("/", { replace: true });
+  //     return;
+  //   }
+
+  //   if (error && error.status === 401) {
+  //     console.log("Токен недействителен, редирект на /");
+  //     localStorage.removeItem("accessToken");
+  //     navigate("/", { replace: true });
+  //   }
+  // }, [error, navigate]);
+  //const [logout] = useLogoutMutation();
+
+  // const handleLogout = async () => {
+  //   try {
+  //     await logout().unwrap();
+  //   } catch (err) {
+  //     console.error('Ошибка выхода:', err);
+  //   }
+  // };
+
+  // if (isLoading) return <Alert severity="info">Загрузка товаров...</Alert>;
+  // if (error) return <Alert severity="error">Ошибка: {error}</Alert>;
+
+  // if (user) {
+  //   loadProducts;
+  // }
+  //const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   loadProducts(dispatch, products);
+  // }, [dispatch]);
+
+  // const {
+  //   list: products,
+  //   loading,
+  //   error,
+  // } = useSelector((state) => state.products);
+
+  if (isLoading) {
     return <Alert severity="info">Загрузка товаров...</Alert>;
   }
 

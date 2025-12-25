@@ -12,7 +12,7 @@ export function LogoutButton({ sx }) {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(clearProducts());
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   return (

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Alert,
@@ -11,8 +11,10 @@ import {
 } from "@mui/material";
 import { FallbackImage } from "../components/FallbackImage";
 import { LogoutButton } from "../components/LogoutButton";
+import { useGetProductByIdQuery } from "../services/products";
 
 function Product() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const productId = Number(id);
   const isNaNProduct = isNaN(productId);
@@ -21,9 +23,41 @@ function Product() {
     return <Navigate to="/Page404" replace />;
   }
 
-  const product = useSelector((state) =>
-    state.products.list.find((p) => p.id === productId)
-  ); //взять id и отправлять запрос на id с конкретным продуктом
+  const {
+    data: product,
+    isLoading,
+    error,
+    refetch: refetchProducts,
+  } = useGetProductByIdQuery(id);
+
+  if (isLoading) {
+    return <Alert severity="info">Загрузка товаров...</Alert>;
+  }
+
+  if (error) {
+    return <Alert severity="error">Ошибка: {error}</Alert>;
+  }
+
+  //console.log(product);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("accessToken");
+
+  //   if (!token) {
+  //     console.log("Нет токена, редирект на /");
+  //     navigate("/", { replace: true });
+  //     return;
+  //   }
+
+  //   if (error && error.status === 401) {
+  //     console.log("Токен недействителен, редирект на /");
+  //     localStorage.removeItem("accessToken");
+  //     navigate("/", { replace: true });
+  //   }
+  // }, [error, navigate]);
+  // const product = useSelector((state) =>
+  //   state.products.list.find((p) => p.id === productId)
+  // ); //взять id и отправлять запрос на id с конкретным продуктом
 
   if (!product) {
     return (

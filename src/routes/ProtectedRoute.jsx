@@ -1,12 +1,27 @@
 import * as React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useGetMeQuery } from "../services/auth";
+import { useEffect } from "react";
 
 export default function ProtectedRoute() {
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const navigate = useNavigate();
 
-  if (!isAuth) {
-    return <Navigate to="/" replace />;
-  }
+  const {
+    data: user,
+    isLoading: userLoading,
+    error: userError,
+    refetch: refetchUser,
+  } = useGetMeQuery();
+
+  useEffect(() => {
+    if (userError) {
+      navigate("/"), { replace: true };
+    }
+  }, [userError, navigate]);
+
+  // if (!isAuth) {
+  //   return <Navigate to="/" replace />;
+  // }
   return <Outlet />;
 }

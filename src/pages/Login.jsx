@@ -9,63 +9,46 @@ import { useLoginMutation } from "../services/auth.js";
 export function Login() {
   //const user = useSelector((state) => state.auth.user);
   //const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const [login, { isLoading, error, isSuccess }] = useLoginMutation();
+  const [login, { isLoading, error }] = useLoginMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(navigate);
-
   const [userLogin, setUserLogin] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [infoMessage, setInfoMessage] = useState("");
-  const [warningMessage, setWarningMessage] = useState("");
+  //const [infoMessage, setInfoMessage] = useState("");
+  //const [warningMessage, setWarningMessage] = useState("");
   const [loginError, setLoginError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // useEffect(() => {
-  //   if (isAuth) {
-  //     navigate("/main", { replace: true });
-  //   }
-  // }, [isAuth, navigate]);
-
   useEffect(() => {
-    if (!infoMessage && !warningMessage) return;
+    const token = localStorage.getItem("accessToken");
 
-    const timer = setTimeout(() => {
-      setInfoMessage("");
-      setWarningMessage("");
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [infoMessage, warningMessage]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log("Авторизация успешна, выполняю редирект...");
-
-      // Вариант 1: Простой редирект
-      navigate("/main");
-
-      // Вариант 2: Редирект с заменой истории
-      // navigate('/main', { replace: true });
-
-      // Вариант 3: Редирект с задержкой (если нужно показать сообщение)
-      // setTimeout(() => {
-      //   navigate('/main');
-      // }, 1000);
+    if (token) {
+      navigate("/main", { replace: true });
     }
-  }, [isSuccess, navigate]);
+  }, []);
+
+  // useEffect(() => {
+  //   if (!infoMessage && !warningMessage) return;
+
+  //   const timer = setTimeout(() => {
+  //     setInfoMessage("");
+  //     setWarningMessage("");
+  //   }, 5000);
+
+  //   return () => clearTimeout(timer);
+  // }, [infoMessage, warningMessage]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    if (!userLogin && !userPassword) {
-      setInfoMessage("Введите данные пользователя");
-      setLoginError("");
-      setPasswordError("");
-      return;
-    }
+    // if (!userLogin || !userPassword) {
+    //   setInfoMessage("Введите данные пользователя");
+    //   setLoginError("");
+    //   setPasswordError("");
+    //   return;
+    // }
 
     // console.log(userLogin);
     // console.log(userPassword);
@@ -87,7 +70,7 @@ export function Login() {
     // console.log(user.password);
 
     //if (userLogin === user.login && userPassword === user.password) {
-    if (userLogin && userPassword) {
+    if (isValid) {
       try {
         const result = await login({
           username: userLogin,
@@ -95,12 +78,10 @@ export function Login() {
         }).unwrap();
         console.log(result);
         //dispatch(login());
-        //navigate("/main");
+        navigate("/main", { replace: true });
       } catch (err) {
         console.error("Ошибка входа:", err);
       }
-    } else {
-      setWarningMessage("Пользователь не найден");
     }
   };
 
@@ -115,13 +96,14 @@ export function Login() {
         height: "100vh",
       }}
     >
-      {infoMessage ? <Alert severity="info">{infoMessage}</Alert> : null}
-      {error ? <Alert severity="warning">Пользователь не найден"</Alert> : null}
+      {/* {infoMessage ? <Alert severity="info">{infoMessage}</Alert> : null} */}
+      {error ? <Alert severity="warning">Пользователь не найден</Alert> : null}
       <form onSubmit={handleLogin}>
         <Box
           sx={{ display: "flex", flexDirection: "column", gap: 2, width: 300 }}
         >
           <TextField
+            disabled={isLoading}
             onChange={(event) => setUserLogin(event.target.value)}
             value={userLogin}
             label="Login"
@@ -134,6 +116,7 @@ export function Login() {
           />
 
           <TextField
+            disabled={isLoading}
             onChange={(event) => setUserPassword(event.target.value)}
             value={userPassword}
             label="Password"

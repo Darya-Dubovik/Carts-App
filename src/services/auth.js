@@ -1,15 +1,12 @@
-// Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_ENDPOINTS, API_URL } from "../constants/api.js";
 
-// Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
-    // credentials: "include", // Включаем cookies
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth?.token; // Получаем токен из состояния
+      const token = getState().auth?.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -19,7 +16,6 @@ export const authApi = createApi({
   tagTypes: ["Auth"],
 
   endpoints: (builder) => ({
-    // Логин
     login: builder.mutation({
       query: (credentials) => ({
         url: API_ENDPOINTS.authLogin,
@@ -27,40 +23,49 @@ export const authApi = createApi({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...credentials,
-          expiresInMins: 60, // Опционально
         }),
       }),
       transformResponse: (response) => {
-        // Сохраняем токен при успешном логине
         localStorage.setItem("accessToken", response.accessToken);
-        localStorage.setItem("refreshToken", response.refreshToken);
         return response;
       },
       invalidatesTags: ["Auth"],
     }),
-    // Получение данных текущего пользователя
+
     getMe: builder.query({
       query: () => API_ENDPOINTS.authMe,
       providesTags: ["Auth"],
+      transformErrorResponse: (response) => {
+        localStorage.removeItem("accessToken");
+        return response;
+      },
     }),
-    refreshToken: builder.mutation({
-      query: (refreshToken) => ({
-        url: API_ENDPOINTS.authRefresh,
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          refreshToken,
-          expiresInMins: 30,
-        }),
-      }),
-    }),
+    // checkAuth: builder.query({
+    //   query: () => API_ENDPOINTS.authMe,
+    //   providesTags: ["Auth"],
+    //   transformErrorResponse: (response) => {
+    //     if (response.status === 401) {
+    //       localStorage.removeItem("accessToken");
+    //     }
+    //     return response;
+    //   },
+    // }),
+    // refreshToken: builder.mutation({
+    //   query: (refreshToken) => ({
+    //     url: API_ENDPOINTS.authRefresh,
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       refreshToken,
+    //     }),
+    //   }),
+    // }),
     // logout: builder.mutation({
     //   query: () => ({
     //     url: "auth/logout", // если эндпоинт существует
     //     method: "POST",
     //   }),
     //   transformResponse: () => {
-    //     // Очищаем хранилище
     //     localStorage.removeItem("accessToken");
     //     localStorage.removeItem("refreshToken");
     //     return { success: true };
@@ -70,7 +75,4 @@ export const authApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useLoginMutation, useGetMeQuery, useRefreshTokenMutation } =
-  authApi;
+export const { useLoginMutation, useGetMeQuery } = authApi;

@@ -12,16 +12,10 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCredentials: (state, action) => {
-      state.token = action.payload.accessToken;
-      state.user = action.payload;
-      localStorage.setItem("accessToken", action.payload.accessToken);
-    },
     logout: (state) => {
       state.token = null;
       state.user = null;
       localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
     },
   },
   extraReducers: (builder) => {
@@ -35,6 +29,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.token = action.payload.accessToken;
         state.user = action.payload;
+        localStorage.setItem("accessToken", action.payload.accessToken);
       }
     );
     builder.addMatcher(
@@ -44,8 +39,19 @@ const authSlice = createSlice({
         state.error = action.error.message;
       }
     );
+    builder.addMatcher(
+      authApi.endpoints.getMe.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload;
+      }
+    );
+    builder.addMatcher(authApi.endpoints.getMe.matchRejected, (state) => {
+      state.token = null;
+      state.user = null;
+      localStorage.removeItem("accessToken");
+    });
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;

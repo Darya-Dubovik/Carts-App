@@ -25,20 +25,12 @@ export const authApi = createApi({
           ...credentials,
         }),
       }),
-      transformResponse: (response) => {
-        localStorage.setItem("accessToken", response.accessToken);
-        return response;
-      },
       invalidatesTags: ["Auth"],
     }),
 
     getMe: builder.query({
       query: () => API_ENDPOINTS.authMe,
       providesTags: ["Auth"],
-      transformErrorResponse: (response) => {
-        localStorage.removeItem("accessToken");
-        return response;
-      },
     }),
   }),
 });

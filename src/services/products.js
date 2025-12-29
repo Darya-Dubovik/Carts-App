@@ -15,7 +15,7 @@ export const productsApi = createApi({
     }),
 
     getProductById: builder.query({
-      query: (id) => `/products/${id}`,
+      query: (id) => `${API_ENDPOINTS.products}/${id}`,
       providesTags: (result, error, id) => [{ type: "Products", id }],
     }),
   }),

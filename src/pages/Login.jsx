@@ -95,7 +95,7 @@ export function Login() {
             type="submit"
             sx={{ mt: 2 }}
           >
-            {isLoading ? "Waiting..." : "Login"}
+            {isLoading ? "Загрузка..." : "Логин"}
           </Button>
         </Box>
       </form>

@@ -3,29 +3,48 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+
+const isDevelopment = process.env.NODE_ENV !== "production";
 
 module.exports = {
-  mode: "development",
-  entry: "./src/index.js",
+  mode: isDevelopment ? "development" : "production",
+  entry: path.resolve(__dirname, "src", "index.js"),
   plugins: [
     new HtmlWebpackPlugin({
-      title: "App",
-      template: "src/template.html",
+      title: "Carts-App",
+      template: path.resolve(__dirname, "src", "template.html"),
     }),
-    new MiniCssExtractPlugin(),
-  ],
+
+    !isDevelopment && new MiniCssExtractPlugin(),
+
+    isDevelopment && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
   output: {
     path: path.resolve(__dirname, "dist"),
+    filename: "main.js",
+    chunkFilename: "[name].js",
+    publicPath: "/",
     clean: true,
   },
   resolve: {
     extensions: [".js", ".jsx"],
   },
   optimization: {
-    minimize: true,
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+    minimize: !isDevelopment,
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+      }),
+    ],
   },
-  devtool: "source-map",
+  devtool: isDevelopment ? "eval-cheap-module-source-map" : "source-map",
   devServer: {
     static: "./dist",
     port: 3000,
@@ -40,7 +59,10 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [
+          isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,

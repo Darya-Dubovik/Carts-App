@@ -1,1 +1,0 @@
-{"version":3,"file":"main.js","mappings":"mBAEuBA,QAAQC,IAAI,Q","sources":["webpack://app/./src/index.js"],"sourcesContent":["import \"./style.css\";\n\nconst sayHello = () => console.log(\"hello\");\nsayHello();\n"],"names":["console","log"],"ignoreList":[],"sourceRoot":""}

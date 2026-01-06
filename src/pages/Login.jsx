@@ -38,7 +38,8 @@ export function Login() {
           username: userLogin,
           password: userPassword,
         }).unwrap();
-        console.log(result);
+        //console.log(result);
+        //localStorage.setItem("accessToken", result.accessToken);
         navigate("/main", { replace: true });
       } catch (err) {
         console.error("Ошибка входа:", err);
